@@ -32,3 +32,12 @@ sysinfo.txt
 # Builds
 *.apk
 # *.unitypackage
+
+Assets/Libs
+Assets/Plugins
+Assets/Test
+Test.meta
+Libs.meta
+Plugins.meta
+Resources.meta
+Assets/Resources
