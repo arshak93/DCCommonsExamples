@@ -6,10 +6,11 @@ using DCCommons.Networking.Rest.Converter;
 using UnityEngine;
 
 namespace DCCommons.Networking.Rest {
-	public class DCRestRequest<T> {
+	public class DCRestRequest<T> : DCRestBaseRequest {
 		
 		public delegate void RequestSuccessDelegate(T data);
 		public delegate void RequestErrorDelegate(Exception e);
+		public delegate void RequestCompleteDelegate(T data, Exception e);
 
 		private readonly DCRestObjectConverter converter;
 		private readonly string path;
@@ -19,6 +20,7 @@ namespace DCCommons.Networking.Rest {
 		private Dictionary<string, object> queryParams = new Dictionary<string, object>();
 		private RequestSuccessDelegate onSuccess;
 		private RequestErrorDelegate onFail;
+		private RequestCompleteDelegate onComplete;
 		private object body;
 
 		public DCRestRequest(DCRestObjectConverter converter, string path, HTTPMethods method, 
@@ -33,7 +35,7 @@ namespace DCCommons.Networking.Rest {
 				}
 			}
 
-			if (headers != null) {
+			if (globalHeaders != null) {
 				foreach (var header in globalHeaders) {
 					headers.Add(header.Key, header.Value);
 				}
@@ -64,19 +66,30 @@ namespace DCCommons.Networking.Rest {
 			this.onFail = onFail;
 			return this;
 		}
+		
+		public DCRestRequest<T> OnComplete(RequestCompleteDelegate onComplete) {
+			this.onComplete = onComplete;
+			return this;
+		}
 
 		public void Send() {
 			HTTPRequest request = new HTTPRequest(createUri(path, queryParams), method,
 				delegate(HTTPRequest originalRequest, HTTPResponse response) {
 					try {
-						T data = processResponse<T>(originalRequest, response);
+						T data = processResponse(originalRequest, response);
 						Debug.Log("<REST> RESPONSE Uri: " + originalRequest.Uri + " Response: " + response.DataAsText);
+						if (onComplete != null) {
+							onComplete(data, null);
+						}
 						if (onSuccess != null) {
 							onSuccess(data);
 						}
 					}
 					catch (Exception e) {
 						Debug.Log("<REST> ERROR: " + e.Message);
+						if (onComplete != null) {
+							onComplete(default(T), e);
+						}
 						if (onFail != null) {
 							onFail(e);
 						}
@@ -98,7 +111,7 @@ namespace DCCommons.Networking.Rest {
 			request.Send();
 		}
 		
-		private T processResponse<T>(HTTPRequest request, HTTPResponse response) {
+		private T processResponse(HTTPRequest request, HTTPResponse response) {
 			if (response == null) {
 				throw request.Exception ?? new Exception("Unknown Exception");
 			}
@@ -110,19 +123,6 @@ namespace DCCommons.Networking.Rest {
 			}
 
 			return result.Data;
-		}
-		
-		private Uri createUri(string path, Dictionary<string, object> queryParams) {
-			StringBuilder query = new StringBuilder();
-			foreach (var key in queryParams.Keys) {
-				query.Append(string.Format("{0}={1}&", key, queryParams[key]));
-			}
-
-			// Remove last &
-			if (query.Length > 0) {
-				query.Remove(query.Length - 1, 1);
-			}
-			return new Uri(path + (query.Length > 0 ? "?" + query : ""));
 		}
 	}
 }
