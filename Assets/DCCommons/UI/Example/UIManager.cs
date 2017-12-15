@@ -3,29 +3,13 @@ using DCCommons.UI.View;
 using UnityEngine;
 
 namespace DCCommons.UI.Example {
-	public class UIManager {
+	public class UIManager : BaseUIManager{
 
-		private ControllerFactory controllerFactory;
-		
-		public Transform ViewContainer { get; private set; }
-
-		public UIManager(Transform viewContainer, ControllerFactory controllerFactory) {
-			this.controllerFactory = controllerFactory;
-			ViewContainer = viewContainer;
-			Debug.Log("UIManager ctor. viewContainer = " + viewContainer.name);
+		protected UIManager(Transform viewContainer, ControllerFactory controllerFactory) : base(viewContainer, controllerFactory) {
 		}
-
+		
 		public void ShowTestView() {
 			createView<TestView, TestController>();
-		}
-
-		private void createView<TView, TController>() 
-			where TView : View<TController>
-			where TController : Controller<TView>
-		{
-			var controller = controllerFactory.Create<TController>();
-			controller.View.Init(controller);
-			controller.View.transform.SetParent(ViewContainer, false);
 		}
 	}
 }

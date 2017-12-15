@@ -8,7 +8,7 @@ using UnityEngine;
 namespace DCCommons.Networking.Rest {
 	public class DCRestRequest<T> {
 		
-		public delegate void RequestSuccessDelegate<T>(T data);
+		public delegate void RequestSuccessDelegate(T data);
 		public delegate void RequestErrorDelegate(Exception e);
 
 		private readonly DCRestObjectConverter converter;
@@ -17,7 +17,7 @@ namespace DCCommons.Networking.Rest {
 
 		private Dictionary<string, string> headers = new Dictionary<string, string>();
 		private Dictionary<string, object> queryParams = new Dictionary<string, object>();
-		private RequestSuccessDelegate<T> onSuccess;
+		private RequestSuccessDelegate onSuccess;
 		private RequestErrorDelegate onFail;
 		private object body;
 
@@ -55,7 +55,7 @@ namespace DCCommons.Networking.Rest {
 			return this;
 		}
 
-		public DCRestRequest<T> OnSuccess(RequestSuccessDelegate<T> onSuccess) {
+		public DCRestRequest<T> OnSuccess(RequestSuccessDelegate onSuccess) {
 			this.onSuccess = onSuccess;
 			return this;
 		}

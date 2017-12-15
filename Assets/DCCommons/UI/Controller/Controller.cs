@@ -9,9 +9,6 @@ namespace DCCommons.UI.Controller {
 	public abstract class Controller<TView> : Controller 
 		where TView : View.View
 	{
-		protected static int globalCount = 0;
-		public int LocalCount = 0;
-		
 		private TView _view;
 		public TView View {
 			get {
@@ -22,13 +19,10 @@ namespace DCCommons.UI.Controller {
 			}
 		}
 
-		public Controller(TView view) {
-			LocalCount = ++globalCount;
+		protected Controller(TView view) {
 			_view = view;
 		}
 
-		~Controller() {
-			--globalCount;
-		}
+		public virtual void Init() { }
 	}
 }

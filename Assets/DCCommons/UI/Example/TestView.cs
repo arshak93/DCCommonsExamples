@@ -13,7 +13,7 @@ namespace DCCommons.UI.Example {
 
 		public override void Init(TestController controller) {
 			base.Init(controller);
-			Debug.Log("View Init " + controller.LocalCount);
+			Debug.Log("View Init, Controller: " + controller);
 		}
 
 		void Start() {

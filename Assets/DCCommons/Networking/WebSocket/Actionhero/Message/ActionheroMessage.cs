@@ -20,12 +20,9 @@ namespace DCCommons.Networking.WebSocket.Actionhero.Message {
 			switch (Context) {
 				case "response":
 					type = WebSocketMessageType.Response;
-					data = Data.ToString();
 					break;
 				case "user":
 					type = WebSocketMessageType.Message;
-					data = Message.ToString();
-					serverPushCode = Message["action"].Value<string>();
 					break;
 				default:
 					type = WebSocketMessageType.Unsupported;
@@ -34,6 +31,17 @@ namespace DCCommons.Networking.WebSocket.Actionhero.Message {
 
 			if (!string.IsNullOrEmpty(Error)) {
 				exception = new Exception(Error);
+			}
+			else {
+				switch (type) {
+					case WebSocketMessageType.Response:
+						data = Data.ToString();
+						break;
+					case WebSocketMessageType.Message:
+						data = Message.ToString();
+						serverPushCode = Message["action"].Value<string>();
+						break;
+				}
 			}
 			
 			return new WebSocketMessageInfo(type, Id, exception, data, serverPushCode);

@@ -87,11 +87,12 @@ namespace DCCommons.Networking.WebSocket {
 		
 		private void decode(string message) {
 			try {
+				Debug.LogFormat("<WS> RCV {0}", message);
 				var info = decodeMessageInfo(message);
 				switch (info.Type) {
 					case WebSocketMessageType.Response:
 						processResponse(info);
-						Debug.LogFormat("<WS> RCV {0}", message);
+						Debug.LogFormat("<WS> RSP {0}", message);
 						break;
 					/*case SocketMessageType.Request:
 			            processRequest(info, length, message);
@@ -177,13 +178,6 @@ namespace DCCommons.Networking.WebSocket {
 		}
 		
 		protected virtual void handleError(BestHTTP.WebSocket.WebSocket socket, Exception error) {
-			/*BaseError err = null;
-			if (error != null) {
-				Debug.LogErrorFormat("Connection Error {0}, Stack: {1}", error.Message, error.StackTrace);
-				err = new BaseError("0", error.Message);
-			}
-			clearSocket();
-			Promise.Disconnect(err);*/
 		}
 		
 		protected virtual void handleErrorDescription(BestHTTP.WebSocket.WebSocket error, string description) {
