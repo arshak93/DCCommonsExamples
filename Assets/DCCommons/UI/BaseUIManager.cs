@@ -1,5 +1,4 @@
 ﻿using DCCommons.UI.Controller;
-using DCCommons.UI.Example;
 using DCCommons.UI.View;
 using UnityEngine;
 
