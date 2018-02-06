@@ -1,3 +1,3 @@
 [submodule "Assets/Common"]
 	path = Assets/Common
-	url = git@github.com:arshak93/DCCommons.git
+url=git@bitbucket.org:doublecoconut1/dccommons.git
