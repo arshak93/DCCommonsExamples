@@ -5,9 +5,12 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
+  - enabled: 1
+    path: Assets/Test/Scenes/NetworkingTest.unity
+    guid: 557e377ad4eeb445eb727160f3d0499b
   - enabled: 0
     path: Assets/Test/Scenes/ZemoClient.unity
     guid: 175d89b205a6740cd80f8b34cdb75387
-  - enabled: 1
+  - enabled: 0
     path: Assets/Test/Scenes/StompTest.unity
     guid: 9822ad06e8cf34043b03c9edba03d55a
